@@ -12,7 +12,8 @@ import {
   List,
   ListItem,
   Picker,
-  Content
+  Content,
+  Icon
 } from "native-base";
 
 // Style
@@ -22,6 +23,20 @@ import styles from "./styles";
 import coffeeshops from "../CoffeeList/list";
 
 class CoffeeDetail extends Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam("coffeeShop").name,
+
+      headerRight: (
+        <Icon
+          name="shopping-cart"
+          type="FontAwesome"
+          color="white"
+          onPress={() => navigation.navigate("Cart")}
+        />
+      )
+    };
+  };
   state = {
     drink: "Cappuccino",
     option: "Small"
@@ -41,21 +56,23 @@ class CoffeeDetail extends Component {
 
   render() {
     const { coffeeShops, loading } = this.props.coffeeReducer;
+    const coffeeShop = this.props.navigation.getParam("coffeeShop");
+
     if (loading) return <Content />;
-    const coffeeshop = coffeeShops[0];
+    // const coffeeshop = coffeeShops[0];
     return (
       <Content>
         <List>
           <ListItem style={styles.top}>
             <Left>
               <Text style={styles.text}>
-                {coffeeshop.name + "\n"}
-                <Text note>{coffeeshop.location}</Text>
+                {coffeeShop.name + "\n"}
+                <Text note>{coffeeShop.location}</Text>
               </Text>
             </Left>
             <Body />
             <Right>
-              <Thumbnail bordered source={coffeeshop.img} />
+              <Thumbnail bordered source={{ uri: coffeeShop.img }} />
             </Right>
           </ListItem>
           <ListItem style={{ borderBottomWidth: 0 }}>

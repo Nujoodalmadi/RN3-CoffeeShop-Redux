@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { ImageBackground, View } from "react-native";
+import { withNavigation } from "react-navigation";
 
 // NativeBase Components
 import { ListItem, Card, CardItem, Thumbnail, Text, Left } from "native-base";
@@ -19,7 +20,15 @@ class CoffeeItem extends Component {
         style={styles.background}
       >
         <View style={styles.overlay} />
-        <ListItem button style={styles.listitem}>
+        <ListItem
+          onPress={() =>
+            this.props.navigation.navigate("CoffeeShopDetail", {
+              coffeeShop: coffeeShop
+            })
+          }
+          button
+          style={styles.listitem}
+        >
           <Card style={styles.transparent}>
             <CardItem style={styles.transparent}>
               <Left>
@@ -41,4 +50,4 @@ class CoffeeItem extends Component {
   }
 }
 
-export default CoffeeItem;
+export default withNavigation(CoffeeItem);
