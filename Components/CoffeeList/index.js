@@ -17,7 +17,7 @@ class CoffeeList extends Component {
       headerRight: (
         <Icon
           name="shopping-cart"
-          type="FontAwesome"
+          type="Feather"
           color="white"
           onPress={() => navigation.navigate("Cart")}
         />

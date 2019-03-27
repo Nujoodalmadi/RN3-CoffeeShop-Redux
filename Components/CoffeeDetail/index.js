@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import * as actionCreator from "../../store/actions";
 
 // NativeBase Components
 import {
@@ -21,6 +22,7 @@ import styles from "./styles";
 
 //List
 import coffeeshops from "../CoffeeList/list";
+import cartReducer from "../../store/reducers/cartReducer";
 
 class CoffeeDetail extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -28,18 +30,24 @@ class CoffeeDetail extends Component {
       title: navigation.getParam("coffeeShop").name,
 
       headerRight: (
-        <Icon
-          name="shopping-cart"
-          type="FontAwesome"
-          color="white"
-          onPress={() => navigation.navigate("Cart")}
-        />
+        <Button transparent>
+          <Text style={{ color: "white", fontSize: 25 }}>
+            {this.props.cartReducer.quantity}
+            <Icon
+              name="shopping-cart"
+              type="Feather"
+              color="white"
+              onPress={() => navigation.navigate("Cart")}
+            />
+          </Text>
+        </Button>
       )
     };
   };
   state = {
     drink: "Cappuccino",
-    option: "Small"
+    option: "Small",
+    quantity: 1
   };
 
   changeDrink = value => {
@@ -103,7 +111,7 @@ class CoffeeDetail extends Component {
               </Picker>
             </Body>
           </ListItem>
-          <Button full danger>
+          <Button onPress={() => this.props.addItem(this.state)} full danger>
             <Text>Add</Text>
           </Button>
         </List>
@@ -113,7 +121,14 @@ class CoffeeDetail extends Component {
 }
 
 const mapStateToProps = state => ({
-  coffeeReducer: state.coffeeReducer
+  coffeeReducer: state.coffeeReducer,
+  cartReducer: state.cartReducer
 });
 
-export default connect(mapStateToProps)(CoffeeDetail);
+const mapDispatchToProps = dispatch => {
+  return { addItem: item => dispatch(actionCreator.addItemToCart(item)) };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CoffeeDetail);
